@@ -20,6 +20,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.ui.FirebaseListAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -68,17 +69,16 @@ public class MainActivity extends AppCompatActivity
         fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
         fireBaseUsers = fireBaseRoot.child("Users");
         fireBaseActiveList = fireBaseRoot.child(activeList);
-
-        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,fireBaseActiveList){
-
+        Query orderedActiveList = fireBaseActiveList.orderByValue();
+        //Create FireBaseUI listadaptor
+        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,orderedActiveList){
             @Override
             protected void populateView(View view, String s) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(s.toString());
+                ((TextView)view.findViewById(android.R.id.text1)).setText(s);
             }
         };
-
+        //Attach list
         mainActivityListView.setAdapter(mainListAdapter);
-
 
     }
 
