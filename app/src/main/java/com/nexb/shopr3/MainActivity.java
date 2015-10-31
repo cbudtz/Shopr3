@@ -12,17 +12,78 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.ui.FirebaseListAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    //DB fields
+    private Firebase fireBaseRoot;
+    private Firebase fireBaseUsers;
+    private String activeList = "Shoplist1";
+    private Firebase fireBaseActiveList;
+    //UI elements
+    private Toolbar toolbar;
+
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+
+    private NavigationView navigationView;
+
+    private ListView mainActivityListView;
+    private FirebaseListAdapter<String> mainListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Setup Toolbar:
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Setup actionbutton
+        setupFloatingActionButton();
+        //Setup layout
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        //setup Navigation view
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        //setup ListView
+        mainActivityListView = (ListView) findViewById(R.id.content_main_listView);
+        //TODO: Replace layout with custom layout and subclass ArrayAdaptor (peek at/Steal from androidelementer)
 
+
+        //setup Firebase connection:
+        Firebase.setAndroidContext(this);
+        fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
+        fireBaseUsers = fireBaseRoot.child("Users");
+        fireBaseActiveList = fireBaseRoot.child(activeList);
+
+        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,fireBaseActiveList){
+
+            @Override
+            protected void populateView(View view, String s) {
+                ((TextView)view.findViewById(android.R.id.text1)).setText(s.toString());
+            }
+        };
+
+        mainActivityListView.setAdapter(mainListAdapter);
+
+
+    }
+
+
+    private void setupFloatingActionButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,15 +92,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
