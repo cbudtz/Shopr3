@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     private Firebase fireBaseRoot;
     private Firebase fireBaseUsers;
     private String activeList = "Shoplist1";
+    private String testList = "Shoplist2";
     private Firebase fireBaseActiveList;
     //UI elements
     private Toolbar toolbar;
@@ -68,18 +69,25 @@ public class MainActivity extends AppCompatActivity
         Firebase.setAndroidContext(this);
         fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
         fireBaseUsers = fireBaseRoot.child("Users");
-        fireBaseActiveList = fireBaseRoot.child(activeList);
+        setActiveList(activeList);
+
+        setActiveList(testList);
+    }
+
+    private void setActiveList(String listID){
+        //Keep reference to old adaptor
+        FirebaseListAdapter<String> oldAdaptor = mainListAdapter;
+        //resolve FB ref
+        fireBaseActiveList = fireBaseRoot.child(listID);
         Query orderedActiveList = fireBaseActiveList.orderByValue();
-        //Create FireBaseUI listadaptor
         mainListAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,orderedActiveList){
             @Override
             protected void populateView(View view, String s) {
                 ((TextView)view.findViewById(android.R.id.text1)).setText(s);
             }
         };
-        //Attach list
         mainActivityListView.setAdapter(mainListAdapter);
-
+        if (oldAdaptor!=null)oldAdaptor.cleanup();//Cleanup Adaptor!
     }
 
 
@@ -126,6 +134,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //Navigation drawer clicks
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -141,9 +150,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            setActiveList(activeList);
         } else if (id == R.id.nav_send) {
-
+            setActiveList(testList);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
