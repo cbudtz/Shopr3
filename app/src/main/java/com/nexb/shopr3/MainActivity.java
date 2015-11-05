@@ -25,13 +25,17 @@ import com.firebase.ui.FirebaseListAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     //DB fields
     private Firebase fireBaseRoot;
-    private Firebase fireBaseUsers;
+
     private String activeList = "Shoplist1";
     private String testList = "Shoplist2";
     private Firebase fireBaseActiveList;
-    //UI elements
+
+    public static final String USERS = "Users";
+    private Firebase fireBaseUsers;
+        //UI elements
     private Toolbar toolbar;
 
     private DrawerLayout drawer;
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         //setup Firebase connection:
         Firebase.setAndroidContext(this);
         fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
-        fireBaseUsers = fireBaseRoot.child("Users");
+        fireBaseUsers = fireBaseRoot.child(USERS);
         setActiveList(activeList);
 
         setActiveList(testList);
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
     }
