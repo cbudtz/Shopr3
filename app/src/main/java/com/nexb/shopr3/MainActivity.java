@@ -1,6 +1,10 @@
 package com.nexb.shopr3;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,16 +16,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,7 +39,10 @@ public class MainActivity extends AppCompatActivity
     private Firebase fireBaseActiveList;
 
     public static final String USERS = "Users";
-    private Firebase fireBaseUsers;
+    private Firebase fireBaseUserList;
+
+    private Firebase firebaseUser;
+
         //UI elements
     private Toolbar toolbar;
 
@@ -45,6 +53,9 @@ public class MainActivity extends AppCompatActivity
 
     private ListView mainActivityListView;
     private FirebaseListAdapter<String> mainListAdapter;
+
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +79,46 @@ public class MainActivity extends AppCompatActivity
         mainActivityListView = (ListView) findViewById(R.id.content_main_listView);
         //TODO: Replace layout with custom layout and subclass ArrayAdaptor (peek at/Steal from androidelementer)
 
-
+        //TODO: Extract Firebase functionality!
         //setup Firebase connection:
         Firebase.setAndroidContext(this);
         fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
-        fireBaseUsers = fireBaseRoot.child(USERS);
-        setActiveList(activeList);
+        fireBaseUserList = fireBaseRoot.child(USERS);
+        //Find user in android accounts
+        //resolve User
+        user = new User();
+        AccountManager manager = (AccountManager) this.getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] list = manager.getAccountsByType("com.google");
+        if (list!=null && list.length>0 && list[0]!=null) {
+            user.setUserID(list[0].name);
+        }
+        else {
+            user.setUserID("" + Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
+        }
 
+        firebaseUser = fireBaseUserList.child(user.getUserID());
+        firebaseUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                //Test syso's
+                System.out.println("DataChanged");
+                System.out.println("Username: " + user.getUserName() +" userID: " + user.getUserID()+"\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName()   );
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
+        setActiveList(activeList);
         setActiveList(testList);
+
+
     }
 
     private void setActiveList(String listID){

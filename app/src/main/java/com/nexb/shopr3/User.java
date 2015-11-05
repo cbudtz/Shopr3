@@ -7,10 +7,10 @@ import java.util.ArrayList;
  */
 public class User {
     private String UserID;
-    private String UserName;
+    private String UserName = "";
 
-    private ArrayList<String> ownLists;
-    private ArrayList<ForeignUserlist> foreignLists;
+    private ArrayList<String> ownLists = null;
+    private ArrayList<ForeignUserlist> foreignLists = null;
 
     public String getUserID() {
         return UserID;

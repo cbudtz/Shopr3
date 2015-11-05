@@ -9,6 +9,14 @@ public class ForeignUserlist {
     private String UserName;
     private ArrayList<String> ShopListIDs;
 
+    public ForeignUserlist() {
+    }
+
+    public ForeignUserlist(String userName, ArrayList<String> shopListIDs) {
+        UserName = userName;
+        ShopListIDs = shopListIDs;
+    }
+
     public ArrayList<String> getShopListIDs() {
         return ShopListIDs;
     }
