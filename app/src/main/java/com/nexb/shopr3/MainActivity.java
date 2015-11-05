@@ -1,15 +1,12 @@
 package com.nexb.shopr3;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,26 +16,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v7.widget.SearchView;
-import com.firebase.client.ChildEventListener;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     //DB fields
     private Firebase fireBaseRoot;
-    private Firebase fireBaseUsers;
+
     private String activeList = "Shoplist1";
     private String testList = "Shoplist2";
     private Firebase fireBaseActiveList;
-    //UI elements
+
+    public static final String USERS = "Users";
+    private Firebase fireBaseUserList;
+
+    private Firebase firebaseUser;
+
+        //UI elements
     private Toolbar toolbar;
 
     private DrawerLayout drawer;
@@ -48,6 +53,9 @@ public class MainActivity extends AppCompatActivity
 
     private ListView mainActivityListView;
     private FirebaseListAdapter<String> mainListAdapter;
+
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +79,45 @@ public class MainActivity extends AppCompatActivity
         mainActivityListView = (ListView) findViewById(R.id.content_main_listView);
         //TODO: Replace layout with custom layout and subclass ArrayAdaptor (peek at/Steal from androidelementer)
 
-
+        //TODO: Extract Firebase functionality!
         //setup Firebase connection:
         Firebase.setAndroidContext(this);
         fireBaseRoot= new Firebase("https://shop-r.firebaseio.com/");
-        fireBaseUsers = fireBaseRoot.child("Users");
-        setActiveList(activeList);
+        fireBaseUserList = fireBaseRoot.child(USERS);
+        //Find user in android accounts
+        //resolve User
+        user = new User();
+        AccountManager manager = (AccountManager) this.getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] list = manager.getAccountsByType("com.google");
+        if (list!=null && list.length>0 && list[0]!=null) {
+            user.setUserID(list[0].name);
+        }
+        else {
+            user.setUserID("" + Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
+        }
 
+        firebaseUser = fireBaseUserList.child(user.getUserID());
+        firebaseUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                //Test syso's
+                System.out.println("DataChanged");
+                System.out.println("Username: " + user.getUserName() +" userID: " + user.getUserID()+"\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName()   );
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
+        setActiveList(activeList);
         setActiveList(testList);
+
 
     }
 
@@ -106,6 +145,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
     }
@@ -123,17 +163,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        // Inflate menu to add items to action bar if it is present.
-        inflater.inflate(R.menu.main, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -145,7 +175,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        //System.out.println(item);
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -157,16 +189,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camara) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if
-          if(id == R.id.nav_share) {
+        if (id == R.id.nav_camara) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
             setActiveList(activeList);
         } else if (id == R.id.nav_send) {
             setActiveList(testList);
