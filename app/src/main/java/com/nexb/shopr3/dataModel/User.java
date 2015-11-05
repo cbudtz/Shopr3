@@ -1,4 +1,6 @@
-package com.nexb.shopr3;
+package com.nexb.shopr3.dataModel;
+
+import com.nexb.shopr3.dataModel.ForeignUserlist;
 
 import java.util.ArrayList;
 

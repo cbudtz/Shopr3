@@ -25,8 +25,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
-
-import java.util.ArrayList;
+import com.nexb.shopr3.dataModel.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -104,6 +103,11 @@ public class MainActivity extends AppCompatActivity
                 //Test syso's
                 System.out.println("DataChanged");
                 System.out.println("Username: " + user.getUserName() +" userID: " + user.getUserID()+"\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName()   );
+                int i =0;
+                for (String s :user.getOwnLists()){
+                    navigationView.getMenu().add(1,i,i,s);
+                    i++;
+                }
             }
 
             @Override
@@ -111,8 +115,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-
 
 
         setActiveList(activeList);
@@ -189,6 +191,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        System.out.println("buttonPressed: " + id);
         if (id == R.id.nav_camara) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -201,7 +204,10 @@ public class MainActivity extends AppCompatActivity
             setActiveList(activeList);
         } else if (id == R.id.nav_send) {
             setActiveList(testList);
+        } else {
+            setActiveList(user.getOwnLists().get(id));
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

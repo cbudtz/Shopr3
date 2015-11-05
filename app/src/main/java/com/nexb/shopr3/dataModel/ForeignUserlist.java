@@ -1,4 +1,4 @@
-package com.nexb.shopr3;
+package com.nexb.shopr3.dataModel;
 
 import java.util.ArrayList;
 
