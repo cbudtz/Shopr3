@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity
 
 
     private User user;
+
+    // textbox in the menu.
+    private EditText edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +127,9 @@ public class MainActivity extends AppCompatActivity
         setActiveList(activeList);
         setActiveList(testList);
 
-
+        //call the key listener to start looking for input. Is to be moved into onOptionsItemSelect
+        // when there is a icon ready to handle the visibility of the edittextbox.
+        addKeyListener();
     }
 
     private void setActiveList(String listID){
@@ -215,5 +223,36 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void addKeyListener() {
+
+        // get edittext component
+        edittext = (EditText) findViewById(R.id.editText);
+
+        // add a keylistener to keep track user input
+        edittext.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                // if keydown and "enter" is pressed
+                if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    // display a floating message
+                    Toast.makeText(MainActivity.this,
+                            edittext.getText(), Toast.LENGTH_LONG).show();
+                    return true;
+
+                } else if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                        && (keyCode == KeyEvent.KEYCODE_9)) {
+
+                    // display a floating message
+                    Toast.makeText(MainActivity.this,
+                            "Number 9 is pressed!", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 }
