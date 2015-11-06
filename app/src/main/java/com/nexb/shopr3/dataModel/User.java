@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * Created by Christian on 05-11-2015.
  */
 public class User {
-    private String UserID;
+    private String UserID = "";
     private String UserName = "";
 
-    private ArrayList<String> ownLists = null;
-    private ArrayList<ForeignUserlist> foreignLists = null;
+    private ArrayList<String> ownLists = new ArrayList<>();
+    private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
 
     public String getUserID() {
         return UserID;
