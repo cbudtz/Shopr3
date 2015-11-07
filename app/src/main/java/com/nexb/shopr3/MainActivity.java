@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         firebaseUser = fireBaseUserList.child(user.getUserID());
-        firebaseUser.setValue(user);
+
         firebaseUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
