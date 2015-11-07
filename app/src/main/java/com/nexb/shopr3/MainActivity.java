@@ -17,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity
 
         //UI elements
     private Toolbar toolbar;
+    private EditText searchField;
+    private AutoCompleteTextView autoBox;
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -69,6 +74,12 @@ public class MainActivity extends AppCompatActivity
         //Setup Toolbar:
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Setup Search Field (EditText)
+
+        //Setup AutoBox
+        autoBox = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteBox);
+        final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
+        autoBox.setAdapter(autoAdaptor);
         //Setup actionbutton
         setupFloatingActionButton();
         //Setup layout
@@ -109,10 +120,10 @@ public class MainActivity extends AppCompatActivity
                 user = dataSnapshot.getValue(User.class);
                 //Test syso's
                 System.out.println("DataChanged");
-                System.out.println("Username: " + user.getUserName() +" userID: " + user.getUserID()+"\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName()   );
-                int i =0;
-                for (String s :user.getOwnLists()){
-                    navigationView.getMenu().add(1,i,i,s);
+                System.out.println("Username: " + user.getUserName() + " userID: " + user.getUserID() + "\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName());
+                int i = 0;
+                for (String s : user.getOwnLists()) {
+                    navigationView.getMenu().add(1, i, i, s);
                     i++;
                 }
             }
@@ -120,6 +131,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
+            }
+        });
+
+        autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                fireBaseActiveList.push().setValue(parent.getItemAtPosition(position));
             }
         });
 
@@ -226,7 +244,7 @@ public class MainActivity extends AppCompatActivity
     public void addKeyListener() {
 
         // get edittext component
-        edittext = (EditText) findViewById(R.id.editText);
+        edittext = (EditText) findViewById(R.id.mainEditText);
 
         // add a keylistener to keep track user input
         edittext.setOnKeyListener(new View.OnKeyListener() {
