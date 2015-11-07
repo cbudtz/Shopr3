@@ -3,7 +3,7 @@ package com.nexb.shopr3.dataModel;
 import java.util.ArrayList;
 
 /**
- * Created by Christian on 05-11-2015.
+ * @author Christian
  */
 public class User {
     private String UserID = "";
