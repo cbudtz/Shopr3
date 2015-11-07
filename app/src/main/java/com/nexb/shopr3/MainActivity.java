@@ -140,6 +140,15 @@ public class MainActivity extends AppCompatActivity
                 fireBaseActiveList.push().setValue(parent.getItemAtPosition(position));
             }
         });
+        autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getAction()==KeyEvent.ACTION_DOWN) fireBaseActiveList.push().setValue(v.getText().toString());
+                System.out.println(v.getText());
+                v.setText("");
+                return true;
+            }
+        });
 
 
         setActiveList(user.getActiveList());
