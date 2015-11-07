@@ -124,8 +124,7 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        setActiveList(activeList);
-        setActiveList(testList);
+        setActiveList(user.getActiveList());
 
         //call the key listener to start looking for input. Is to be moved into onOptionsItemSelect
         // when there is a icon ready to handle the visibility of the edittextbox.
