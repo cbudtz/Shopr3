@@ -7,11 +7,18 @@ import java.util.ArrayList;
  */
 public class User {
     private String UserID = "";
-    private String UserName = "";
+    private String UserName = "DummyUser";
 
     private ArrayList<String> ownLists = new ArrayList<>();
     private ArrayList<ForeignUserlist> foreignLists = new ArrayList<>();
     private String activeList = "Shoplist1";
+
+    public User(){
+        //For Testing puposes
+        ownLists.add("Shoplist1");
+        ownLists.add("Shoplist2");
+        foreignLists.add(new ForeignUserlist("Christian",new ArrayList<String>()));
+    }
 
 
     public String getUserID() {

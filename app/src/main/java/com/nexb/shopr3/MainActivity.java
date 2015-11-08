@@ -121,7 +121,16 @@ public class MainActivity extends AppCompatActivity
         firebaseUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
+                User foreignUser = dataSnapshot.getValue(User.class);
+                if (foreignUser==null ||foreignUser.getUserName()==null) {
+                    firebaseUser.setValue(user);
+                    System.out.println("User created");
+                } else {
+                    user = foreignUser;
+                    System.out.println("User already Exists");
+
+                }
+
                 //Test syso's
                 System.out.println("DataChanged");
                 System.out.println("Username: " + user.getUserName() + " userID: " + user.getUserID() + "\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName());
