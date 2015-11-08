@@ -37,6 +37,7 @@ import com.nexb.shopr3.dataModel.User;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final int FirebaseId = 0;
     //DB fields
     private Firebase fireBaseRoot;
 
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity
                 ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
                 ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
                 ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
+                view.setTag(FirebaseId,s.getItemID());
 
             }
         };
