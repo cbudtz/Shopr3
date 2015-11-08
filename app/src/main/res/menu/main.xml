@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
-    <!--<EditText-->
-        <!--android:id="@+id/editText"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" >-->
+    <item
+        android:id="@id/openTextBox"
+        android:title="@string/openTextBox"
+        android:orderInCategory="90"
+        android:icon="@android:drawable/ic_input_add"
+        app:showAsAction="always"/>
 
-        <!--<requestFocus />-->
-
-    <!--</EditText>-->
+    <item
+        android:id="@id/mode"
+        android:title="@string/mode"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/stat_notify_sync_noanim"
+        app:showAsAction="always"
+        />
 </menu>

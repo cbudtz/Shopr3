@@ -10,4 +10,6 @@
     <string name="search_hint">Type and Search</string>
     <string name="menu_search">Search</string>
     <string name="textBox">textBoz</string>
+    <string name="openTextBox">opentextbox</string>
+    <string name="mode">Mode</string>
 </resources>

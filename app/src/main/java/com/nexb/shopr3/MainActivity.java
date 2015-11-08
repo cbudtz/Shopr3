@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity
 
     private User user;
 
-    // textbox in the menu.
-    private EditText edittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity
         autoBox = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteBox);
         final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
         autoBox.setAdapter(autoAdaptor);
+        autoBox.setVisibility(View.INVISIBLE);
         //Setup actionbutton
         setupFloatingActionButton();
         //Setup layout
@@ -153,9 +152,6 @@ public class MainActivity extends AppCompatActivity
 
         setActiveList(user.getActiveList());
 
-        //call the key listener to start looking for input. Is to be moved into onOptionsItemSelect
-        // when there is a icon ready to handle the visibility of the edittextbox.
-        addKeyListener();
     }
 
     private void setActiveList(String listID){
@@ -210,12 +206,18 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(id == R.id.openTextBox ){
+            if(autoBox.getVisibility() == View.INVISIBLE){
+                autoBox.setVisibility(View.VISIBLE);
+            }
+            else{
+                autoBox.setVisibility(View.INVISIBLE);
+            }
+        }
+        else if(id == R.id.mode){
+            autoBox.setVisibility(View.INVISIBLE);
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -227,58 +229,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         System.out.println("buttonPressed: " + id);
-        if
-//                (id == R.id.nav_camara) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if
-                (id == R.id.nav_share) {
+
+        if (id == R.id.nav_newList) {
+            //make a new list
+        } else if (id == R.id.nav_share) {
             setActiveList(activeList);
-        } else if (id == R.id.nav_send) {
-            setActiveList(testList);
         } else {
             setActiveList(user.getOwnLists().get(id));
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void addKeyListener() {
 
-        // get edittext component
-//        edittext = (EditText) findViewById(R.id.mainEditText);
-//
-//        // add a keylistener to keep track user input
-//        edittext.setOnKeyListener(new View.OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                // if keydown and "enter" is pressed
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN)
-//                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//
-//                    // display a floating message
-//                    Toast.makeText(MainActivity.this,
-//                            edittext.getText(), Toast.LENGTH_LONG).show();
-//                    return true;
-//
-//                } else if ((event.getAction() == KeyEvent.ACTION_DOWN)
-//                        && (keyCode == KeyEvent.KEYCODE_9)) {
-//
-//                    // display a floating message
-//                    Toast.makeText(MainActivity.this,
-//                            "Number 9 is pressed!", Toast.LENGTH_LONG).show();
-//                    return true;
-//                }
-//
-//                return false;
-//            }
-//        });
-    }
 }
