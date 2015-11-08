@@ -31,7 +31,6 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 import com.nexb.shopr3.dataModel.InstantAutoCompleteTextView;
-import com.nexb.shopr3.dataModel.ListItem;
 import com.nexb.shopr3.dataModel.User;
 
 public class MainActivity extends AppCompatActivity
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
 
     private ListView mainActivityListView;
-    private FirebaseListAdapter<ListItem> mainListAdapter;
+    private FirebaseListAdapter<String> mainListAdapter;
 
 
     private User user;
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity
         final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
         autoBox.setAdapter(autoAdaptor);
         autoBox.setHint("Write new item here");
-        autoBox.setVisibility(View.INVISIBLE);
         autoBox.setThreshold(0);
         //Setup actionbutton
         setupFloatingActionButton();
@@ -139,20 +137,14 @@ public class MainActivity extends AppCompatActivity
         autoBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Firebase newItem = fireBaseActiveList.push();
-                        newItem.setValue(new ListItem(newItem.getKey(),1, " ", (parent.getItemAtPosition(position)).toString()));
+                fireBaseActiveList.push().setValue(parent.getItemAtPosition(position));
                 autoBox.setText("");
-                autoBox.showDropDown();
             }
         });
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Firebase newItem;
-                if (event.getAction()==KeyEvent.ACTION_DOWN){
-                    newItem = fireBaseActiveList.push();
-                    newItem.setValue(new ListItem(newItem.getKey(),1, " ", v.getText().toString()));
-                }
+                if (event.getAction()==KeyEvent.ACTION_DOWN) fireBaseActiveList.push().setValue(v.getText().toString());
                 System.out.println(v.getText());
                 v.setText("");
                 return true;
@@ -166,14 +158,14 @@ public class MainActivity extends AppCompatActivity
 
     private void setActiveList(String listID){
         //Keep reference to old adaptor
-        FirebaseListAdapter<ListItem> oldAdaptor = mainListAdapter;
+        FirebaseListAdapter<String> oldAdaptor = mainListAdapter;
         //resolve FB ref
         fireBaseActiveList = fireBaseRoot.child(listID);
         Query orderedActiveList = fireBaseActiveList.orderByValue();
-        mainListAdapter = new FirebaseListAdapter<ListItem>(this,ListItem.class,R.layout.list_item,orderedActiveList){
+        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,R.layout.list_item,orderedActiveList){
             @Override
-            protected void populateView(View view, ListItem s) {
-                ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
+            protected void populateView(View view, String s) {
+                ((TextView)view.findViewById(R.id.itemName)).setText(s);
                 ((TextView)view.findViewById(R.id.itemAmount)).setText("0");
                 ((TextView)view.findViewById(R.id.itemType)).setText("L");
 
