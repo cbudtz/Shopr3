@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
         final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
         autoBox.setAdapter(autoAdaptor);
         autoBox.setHint("Write new item here");
+        autoBox.setVisibility(View.INVISIBLE);
         autoBox.setThreshold(0);
         //Setup actionbutton
         setupFloatingActionButton();
@@ -175,37 +176,64 @@ public class MainActivity extends AppCompatActivity
         Query orderedActiveList = fireBaseActiveList.orderByValue();
         mainListAdapter = new FirebaseListAdapter<ListItem>(this,ListItem.class,R.layout.list_item,orderedActiveList){
             @Override
-            protected void populateView(final View view, ListItem s) {
+            protected void populateView(final View view, final ListItem s) {
                 ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
                 ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
                 ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
                 view.setTag(s.getItemID());
 
-                // on click methods for the views
+                // on click methods for the views items
                 // DELETE
                 view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         view.setVisibility(View.INVISIBLE);
+                        // remove listItem from list
+
                     }
                 });
                 // MINUS ONE BUTTON
                 view.findViewById(R.id.minusOne).setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        // kan ikke fange s herfra
-//                        double oldvalue = s.getAmount();
-//                        if(oldvalue > 1) {
-//                            s.setAmount(oldvalue - 1);
-//                        }
+                        double oldvalue = s.getAmount();
+                        if(oldvalue > 1) {
+                            s.setAmount(oldvalue - 1);
+                            // push new value to firebase here
+                            ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+                        }
                     }
                 });
                 // PLUS ONE BUTTON
-                view.findViewById(R.id.plusOne).setOnClickListener(new View.OnClickListener(){
+                view.findViewById(R.id.plusOne).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        double oldvalue = s.getAmount();
-//                        s.setAmount(oldvalue + 1);
+                        double oldvalue = s.getAmount();
+                        s.setAmount(oldvalue + 1);
+                        // push new value to firebase here
+                        ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+
+                    }
+                });
+                // item type edit text
+                view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final InstantAutoCompleteTextView typeBox = (InstantAutoCompleteTextView) findViewById(R.id.itemType);
+                        final ArrayAdapter<String> adaptorForItemType = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_dropdown_item_1line, new String[]{"Stk", "Kilo", "Gram", "Liter", "Gallon",});
+                        typeBox.setAdapter(adaptorForItemType);
+                        Toast.makeText(MainActivity.this,
+                                "Her skal laves en listener der ændre type på vare ved action enter",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                // item amount edit text
+                view.findViewById(R.id.itemAmount).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this,
+                                "Her skal laves en key listener der ændre antal på vare ved action enter",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
             }

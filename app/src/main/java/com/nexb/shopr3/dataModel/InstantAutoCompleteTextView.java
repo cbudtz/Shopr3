@@ -3,6 +3,7 @@ package com.nexb.shopr3.dataModel;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 
 /**
@@ -31,4 +32,6 @@ public class InstantAutoCompleteTextView extends AutoCompleteTextView {
             this.showDropDown();
         }
     }
+
+
 }
