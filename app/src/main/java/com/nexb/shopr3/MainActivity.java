@@ -253,32 +253,32 @@ public class MainActivity extends AppCompatActivity
     public void addKeyListener() {
 
         // get edittext component
-        edittext = (EditText) findViewById(R.id.mainEditText);
-
-        // add a keylistener to keep track user input
-        edittext.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                // if keydown and "enter" is pressed
-                if ((event.getAction() == KeyEvent.ACTION_DOWN)
-                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                    // display a floating message
-                    Toast.makeText(MainActivity.this,
-                            edittext.getText(), Toast.LENGTH_LONG).show();
-                    return true;
-
-                } else if ((event.getAction() == KeyEvent.ACTION_DOWN)
-                        && (keyCode == KeyEvent.KEYCODE_9)) {
-
-                    // display a floating message
-                    Toast.makeText(MainActivity.this,
-                            "Number 9 is pressed!", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-
-                return false;
-            }
-        });
+//        edittext = (EditText) findViewById(R.id.mainEditText);
+//
+//        // add a keylistener to keep track user input
+//        edittext.setOnKeyListener(new View.OnKeyListener() {
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                // if keydown and "enter" is pressed
+//                if ((event.getAction() == KeyEvent.ACTION_DOWN)
+//                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+//
+//                    // display a floating message
+//                    Toast.makeText(MainActivity.this,
+//                            edittext.getText(), Toast.LENGTH_LONG).show();
+//                    return true;
+//
+//                } else if ((event.getAction() == KeyEvent.ACTION_DOWN)
+//                        && (keyCode == KeyEvent.KEYCODE_9)) {
+//
+//                    // display a floating message
+//                    Toast.makeText(MainActivity.this,
+//                            "Number 9 is pressed!", Toast.LENGTH_LONG).show();
+//                    return true;
+//                }
+//
+//                return false;
+//            }
+//        });
     }
 }
