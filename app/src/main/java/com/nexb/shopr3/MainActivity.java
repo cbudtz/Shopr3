@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity
         autoBox = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteBox);
         final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
         autoBox.setAdapter(autoAdaptor);
+        autoBox.setHint("Write new item here");
         autoBox.setVisibility(View.INVISIBLE);
         //Setup actionbutton
         setupFloatingActionButton();
@@ -160,10 +161,10 @@ public class MainActivity extends AppCompatActivity
         //resolve FB ref
         fireBaseActiveList = fireBaseRoot.child(listID);
         Query orderedActiveList = fireBaseActiveList.orderByValue();
-        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,orderedActiveList){
+        mainListAdapter = new FirebaseListAdapter<String>(this,String.class,R.layout.list_item,orderedActiveList){
             @Override
             protected void populateView(View view, String s) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(s);
+                ((TextView)view.findViewById(R.id.itemName)).setText(s);
             }
         };
         mainActivityListView.setAdapter(mainListAdapter);
