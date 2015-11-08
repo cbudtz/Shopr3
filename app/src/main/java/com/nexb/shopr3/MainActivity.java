@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 fireBaseActiveList.push().setValue(parent.getItemAtPosition(position));
+                autoBox.setText("");
             }
         });
         autoBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
