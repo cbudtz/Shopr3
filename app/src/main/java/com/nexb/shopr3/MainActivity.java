@@ -173,8 +173,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             protected void populateView(View view, ListItem s) {
                 ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
-                ((TextView)view.findViewById(R.id.itemAmount)).setText("0");
-                ((TextView)view.findViewById(R.id.itemType)).setText("L");
+                ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+                ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
 
             }
         };
