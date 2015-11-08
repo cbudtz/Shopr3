@@ -165,6 +165,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             protected void populateView(View view, String s) {
                 ((TextView)view.findViewById(R.id.itemName)).setText(s);
+                ((TextView)view.findViewById(R.id.itemAmount)).setText("0");
+                ((TextView)view.findViewById(R.id.itemType)).setText("L");
+
             }
         };
         mainActivityListView.setAdapter(mainListAdapter);

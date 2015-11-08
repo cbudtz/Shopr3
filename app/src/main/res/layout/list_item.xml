@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="10dp">
 
     <ImageButton
         android:id="@+id/minusOne"
@@ -33,6 +33,13 @@
         android:src="@android:drawable/presence_online"
         android:padding="1dp"
         />
+    <TextView
+        android:id="@+id/itemType"
+        android:text="@string/itemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/plusOne"/>
 
 
     <TextView
@@ -43,6 +50,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
+        android:paddingLeft="10dp"
         />
 
     <ImageButton

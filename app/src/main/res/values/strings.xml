@@ -14,4 +14,5 @@
     <string name="mode">Mode</string>
     <string name="itemTitle">title</string>
     <string name="itemAmount">amount</string>
+    <string name="itemType">Type</string>
 </resources>
