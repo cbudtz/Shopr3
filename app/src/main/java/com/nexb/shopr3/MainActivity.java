@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity
                     navigationView.getMenu().add(1, i, i, s);
                     i++;
                 }
-//                findViewById(R.id.userMail).
+                if(user.getUserID()!=null)((TextView)findViewById(R.id.userMail)).setText(user.getUserID());
+                if(user.getUserName()!=null)((TextView)findViewById(R.id.userName)).setText(user.getUserName());
             }
 
             @Override
@@ -193,7 +194,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
             }
         });
     }
