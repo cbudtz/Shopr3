@@ -31,6 +31,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
+import com.nexb.shopr3.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr3.dataModel.User;
 
 public class MainActivity extends AppCompatActivity
@@ -75,11 +76,12 @@ public class MainActivity extends AppCompatActivity
         //Setup Search Field (EditText)
 
         //Setup AutoBox
-        autoBox = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteBox);
+        autoBox = (InstantAutoCompleteTextView) findViewById(R.id.mainAutoCompleteBox);
         final ArrayAdapter<String> autoAdaptor = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, new String[]{"Bananer","Ananas","Citroner","Pærer","Æg"});
         autoBox.setAdapter(autoAdaptor);
         autoBox.setHint("Write new item here");
         autoBox.setVisibility(View.INVISIBLE);
+        autoBox.setThreshold(0);
         //Setup actionbutton
         setupFloatingActionButton();
         //Setup layout
