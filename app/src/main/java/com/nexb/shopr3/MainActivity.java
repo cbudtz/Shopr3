@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity
                 view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        view.setVisibility(View.INVISIBLE);
-                        // remove listItem from list
-
+                        //view.setVisibility(View.INVISIBLE);
+                        System.out.println(view.getTag());
+                        fireBaseActiveList.child(view.getTag().toString()).removeValue();
                     }
                 });
                 // MINUS ONE BUTTON
