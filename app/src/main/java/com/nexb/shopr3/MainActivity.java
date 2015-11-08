@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity
         AccountManager manager = (AccountManager) this.getSystemService(Context.ACCOUNT_SERVICE);
         Account[] list = manager.getAccountsByType("com.google");
         if (list!=null && list.length>0 && list[0]!=null) {
-            user.setUserID(list[0].name);
+            String id = list[0].name;
+            id = id.replace('.','_');
+            System.out.println(id);
+            user.setUserID(id);
         }
         else {
             user.setUserID("" + Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
