@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -174,12 +175,39 @@ public class MainActivity extends AppCompatActivity
         Query orderedActiveList = fireBaseActiveList.orderByValue();
         mainListAdapter = new FirebaseListAdapter<ListItem>(this,ListItem.class,R.layout.list_item,orderedActiveList){
             @Override
-            protected void populateView(View view, ListItem s) {
+            protected void populateView(final View view, ListItem s) {
                 ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
                 ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
                 ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
                 view.setTag(s.getItemID());
 
+                // on click methods for the views
+                // DELETE
+                view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        view.setVisibility(View.INVISIBLE);
+                    }
+                });
+                // MINUS ONE BUTTON
+                view.findViewById(R.id.minusOne).setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        // kan ikke fange s herfra
+//                        double oldvalue = s.getAmount();
+//                        if(oldvalue > 1) {
+//                            s.setAmount(oldvalue - 1);
+//                        }
+                    }
+                });
+                // PLUS ONE BUTTON
+                view.findViewById(R.id.plusOne).setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+//                        double oldvalue = s.getAmount();
+//                        s.setAmount(oldvalue + 1);
+                    }
+                });
             }
         };
         mainActivityListView.setAdapter(mainListAdapter);
