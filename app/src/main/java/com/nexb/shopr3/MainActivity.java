@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity
                     navigationView.getMenu().add(1, i, i, s);
                     i++;
                 }
+//                findViewById(R.id.userMail).
             }
 
             @Override
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity
                 ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
                 ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
                 ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
-                view.setTag(FirebaseId,s.getItemID());
+                view.setTag(s.getItemID());
 
             }
         };
