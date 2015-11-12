@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
         autoBox.setHint("Write new item here");
         autoBox.setVisibility(View.INVISIBLE);
         autoBox.setThreshold(0);
+        autoBox.setDropDownBackgroundDrawable(getResources().getDrawable(android.R.drawable.alert_light_frame));
         //Setup actionbutton
         setupFloatingActionButton();
         //Setup layout

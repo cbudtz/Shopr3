@@ -8,13 +8,12 @@
     android:padding="10dp">
 
     <ImageButton
-        android:id="@+id/minusOne"
+        android:id="@+id/plusOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:src="@android:drawable/presence_busy"
-        android:padding="1dp"
-        />
+        android:src="@android:drawable/ic_input_add"
+        android:padding="1dp" />
 
     <EditText
         android:id="@+id/itemAmount"
@@ -22,24 +21,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/minusOne"/>
+        android:layout_toRightOf="@+id/plusOne"/>
 
     <ImageButton
-        android:id="@+id/plusOne"
+        android:id="@+id/minusOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/itemAmount"
-        android:src="@android:drawable/presence_online"
+        android:src="@android:drawable/presence_busy"
         android:padding="1dp"
         />
+
     <com.nexb.shopr3.dataModel.InstantAutoCompleteTextView
         android:id="@+id/itemType"
         android:text="@string/itemType"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/plusOne"/>
+        android:layout_toRightOf="@+id/minusOne"/>
 
 
     <TextView

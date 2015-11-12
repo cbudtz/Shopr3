@@ -30,6 +30,7 @@ public class InstantAutoCompleteTextView extends AutoCompleteTextView {
         if (focused) {
             //performFiltering(getText(), 0);
             this.showDropDown();
+
         }
     }
 
