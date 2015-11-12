@@ -186,70 +186,7 @@ public class MainActivity extends AppCompatActivity
         //resolve FB ref
         fireBaseActiveList = fireBaseRoot.child(listID);
         Query orderedActiveList = fireBaseActiveList.orderByValue();
-        mainListAdapter = new FirebaseListAdapter<ListItem>(this,ListItem.class,R.layout.list_item,orderedActiveList){
-            @Override
-            protected void populateView(final View view, final ListItem s) {
-                ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
-                ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
-                ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
-                view.setTag(s.getItemID());
-
-                // on click methods for the views items
-                // DELETE
-                view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //view.setVisibility(View.INVISIBLE);
-                        System.out.println(view.getTag());
-                        fireBaseActiveList.child(s.getItemID()).removeValue();
-                    }
-                });
-                // MINUS ONE BUTTON
-                view.findViewById(R.id.minusOne).setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        double oldvalue = s.getAmount();
-                        if(oldvalue > 1) {
-                            s.setAmount(oldvalue - 1);
-                            // push new value to firebase here
-                            fireBaseActiveList.child(s.getItemID()).setValue(s);
-                        }
-                    }
-                });
-                // PLUS ONE BUTTON
-                view.findViewById(R.id.plusOne).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        double oldvalue = s.getAmount();
-                        s.setAmount(oldvalue + 1);
-                        // push new value to firebase here
-                        fireBaseActiveList.child(s.getItemID()).setValue(s);
-
-                    }
-                });
-                // item type edit text
-                view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final InstantAutoCompleteTextView typeBox = (InstantAutoCompleteTextView) findViewById(R.id.itemType);
-                        final ArrayAdapter<String> adaptorForItemType = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_dropdown_item_1line, new String[]{"Stk", "Kilo", "Gram", "Liter", "Gallon",});
-                        typeBox.setAdapter(adaptorForItemType);
-                        Toast.makeText(MainActivity.this,
-                                "Her skal laves en listener der ændre type på vare ved action enter",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-                // item amount edit text
-                view.findViewById(R.id.itemAmount).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this,
-                                "Her skal laves en key listener der ændre antal på vare ved action enter",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        };
+        mainListAdapter = new ShopListFirebaseAdapter(orderedActiveList);
         mainActivityListView.setAdapter(mainListAdapter);
         if (oldAdaptor!=null)oldAdaptor.cleanup();//Cleanup Adaptor!
     }
@@ -326,4 +263,72 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private class ShopListFirebaseAdapter extends FirebaseListAdapter<ListItem> {
+        public ShopListFirebaseAdapter(Query orderedActiveList) {
+            super(MainActivity.this, ListItem.class, R.layout.list_item, orderedActiveList);
+        }
+
+        @Override
+        protected void populateView(final View view, final ListItem s) {
+            ((TextView)view.findViewById(R.id.itemName)).setText(s.getName());
+            ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+            ((TextView)view.findViewById(R.id.itemType)).setText(s.getUnit());
+            view.setTag(s.getItemID());
+
+            // on click methods for the views items
+            // DELETE
+            view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //view.setVisibility(View.INVISIBLE);
+                    System.out.println(view.getTag());
+                    fireBaseActiveList.child(s.getItemID()).removeValue();
+                }
+            });
+            // MINUS ONE BUTTON
+            view.findViewById(R.id.minusOne).setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    double oldvalue = s.getAmount();
+                    if(oldvalue > 1) {
+                        s.setAmount(oldvalue - 1);
+                        // push new value to firebase here
+                        fireBaseActiveList.child(s.getItemID()).setValue(s);
+                    }
+                }
+            });
+            // PLUS ONE BUTTON
+            view.findViewById(R.id.plusOne).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    double oldvalue = s.getAmount();
+                    s.setAmount(oldvalue + 1);
+                    // push new value to firebase here
+                    fireBaseActiveList.child(s.getItemID()).setValue(s);
+
+                }
+            });
+            // item type edit text
+            view.findViewById(R.id.itemType).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final InstantAutoCompleteTextView typeBox = (InstantAutoCompleteTextView) findViewById(R.id.itemType);
+                    final ArrayAdapter<String> adaptorForItemType = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_dropdown_item_1line, new String[]{"Stk", "Kilo", "Gram", "Liter", "Gallon",});
+                    typeBox.setAdapter(adaptorForItemType);
+                    Toast.makeText(MainActivity.this,
+                            "Her skal laves en listener der ændre type på vare ved action enter",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            // item amount edit text
+            view.findViewById(R.id.itemAmount).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this,
+                            "Her skal laves en key listener der ændre antal på vare ved action enter",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
 }
