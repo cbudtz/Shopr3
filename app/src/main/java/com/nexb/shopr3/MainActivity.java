@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity
                         if(oldvalue > 1) {
                             s.setAmount(oldvalue - 1);
                             // push new value to firebase here
-                            ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+                            fireBaseActiveList.child(s.getItemID()).setValue(s);
                         }
                     }
                 });
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
                         double oldvalue = s.getAmount();
                         s.setAmount(oldvalue + 1);
                         // push new value to firebase here
-                        ((TextView)view.findViewById(R.id.itemAmount)).setText(String.valueOf(s.getAmount()));
+                        fireBaseActiveList.child(s.getItemID()).setValue(s);
 
                     }
                 });
