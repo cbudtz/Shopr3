@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View v) {
                         //view.setVisibility(View.INVISIBLE);
                         System.out.println(view.getTag());
-                        fireBaseActiveList.child(view.getTag().toString()).removeValue();
+                        fireBaseActiveList.child(s.getItemID()).removeValue();
                     }
                 });
                 // MINUS ONE BUTTON
