@@ -33,6 +33,7 @@ import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 import com.nexb.shopr3.dataModel.InstantAutoCompleteTextView;
 import com.nexb.shopr3.dataModel.ListItem;
+import com.nexb.shopr3.dataModel.ShopList;
 import com.nexb.shopr3.dataModel.User;
 
 public class MainActivity extends AppCompatActivity
@@ -117,10 +118,16 @@ public class MainActivity extends AppCompatActivity
             user.setUserID(id);
         }
         else {
-            user.setUserID("" + Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
-        }
 
+            user.setUserID("" + Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
+
+        }
+        System.out.println(user.getUserID());
+        //ShopList testShopList = new ShopList();
+        //Firebase newlistRef = fireBaseRoot.push();
+        //testShopList.setCreatedByID(user.getUserID());
         firebaseUser = fireBaseUserList.child(user.getUserID());
+       // newlistRef.setValue(testShopList);
 
         firebaseUser.addValueEventListener(new ValueEventListener() {
             @Override
@@ -137,7 +144,8 @@ public class MainActivity extends AppCompatActivity
 
                 //Test syso's
                 System.out.println("DataChanged");
-                System.out.println("Username: " + user.getUserName() + " userID: " + user.getUserID() + "\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists().get(0).getUserName());
+                System.out.println("Username: " + user.getUserName() + " userID: " + user.getUserID() + "\nOwnLists: " + user.getOwnLists() + " foreignUsers: " + user.getForeignLists());
+                navigationView.getMenu().removeGroup(1);
                 int i = 0;
                 for (String s : user.getOwnLists()) {
                     navigationView.getMenu().add(1, i, i, s);

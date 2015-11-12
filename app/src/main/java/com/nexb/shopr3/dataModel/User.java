@@ -17,7 +17,6 @@ public class User {
         //For Testing puposes
         ownLists.add("Shoplist1");
         ownLists.add("Shoplist2");
-        foreignLists.add(new ForeignUserlist("Christian",new ArrayList<String>()));
     }
 
 
